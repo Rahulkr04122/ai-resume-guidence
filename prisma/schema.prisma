@@ -1,0 +1,102 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String    @id @default(cuid())
+  name        String
+  email       String    @unique
+  password    String
+  image       String?
+  plan        String    @default("FREE")
+  title       String?
+  targetRole  String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  resumes     Resume[]
+  analyses    Analysis[]
+  roadmaps    Roadmap[]
+  sessions    Session[]
+
+  @@map("users")
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model Resume {
+  id          String   @id @default(cuid())
+  userId      String
+  fileName    String
+  fileSize    Int
+  mimeType    String
+  storagePath String
+  rawText     String
+  wordCount   Int      @default(0)
+  targetRole  String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  analyses    Analysis[]
+
+  @@map("resumes")
+}
+
+model Analysis {
+  id              String   @id @default(cuid())
+  userId          String
+  resumeId        String
+  overallScore    Int
+  grade           String
+  summary         String
+  sectionScores   Json
+  strengths       Json
+  improvements    Json
+  missingKeywords Json
+  topSkills       Json
+  atsCompatible   Boolean  @default(true)
+  yearsExperience Int      @default(0)
+  targetRole      String?
+  durationMs      Int      @default(0)
+  createdAt       DateTime @default(now())
+
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  resume          Resume   @relation(fields: [resumeId], references: [id], onDelete: Cascade)
+
+  @@map("analyses")
+}
+
+model Roadmap {
+  id           String   @id @default(cuid())
+  userId       String
+  title        String
+  overview     String
+  currentRole  String
+  targetRole   String
+  timeline     String
+  phases       Json
+  gapAnalysis  Json
+  resources    Json
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("roadmaps")
+}

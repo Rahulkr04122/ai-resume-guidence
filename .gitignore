@@ -1,0 +1,26 @@
+# Dependencies
+node_modules/
+
+# Next.js
+.next/
+out/
+build/
+
+# Environment variables (VERY IMPORTANT - never upload this!)
+.env
+.env.local
+.env.production
+
+# Prisma
+prisma/migrations/
+
+# Uploads
+public/uploads/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
