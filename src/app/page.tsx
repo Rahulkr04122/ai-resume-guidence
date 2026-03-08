@@ -30,7 +30,7 @@ export default async function HomePage() {
 
       <section className="flex-1 flex flex-col items-center justify-center text-center px-6 py-24">
         <div className="badge-gold mb-6 animate-fade-in">
-          Powered by Claude AI
+          Powered with AI
         </div>
         <h1 className="font-display text-6xl md:text-7xl lg:text-8xl leading-[1.05] tracking-tight text-[#f0ede8] max-w-4xl mb-6 animate-fade-up">
           Your career,
